@@ -1,0 +1,3 @@
+﻿#Ejemplo de llamada a Add-migration con parametros (para las opcines de DBContext en tiempo de Diseño):
+
+add-migration Recurso -Args "(localdb)\\mssqllocaldb;Initial Catalog=TestInsercion;Integrated Security=True"
