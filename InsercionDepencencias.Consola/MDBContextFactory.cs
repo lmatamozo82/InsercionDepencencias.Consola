@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-
+using System.Linq;
 
 namespace InsercionDepencencias.Consola
 {
@@ -11,10 +11,10 @@ namespace InsercionDepencencias.Consola
     {
         public MDBContext CreateDbContext(string[] args)
         {
-            
+            string conectionString = string.Join(" ",args);
             var optionsBuilder = new DbContextOptionsBuilder<MDBContext>();
-            //optionsBuilder.UseSqlServer("(localdb)\\mssqllocaldb;Initial Catalog=TestInsercion;Integrated Security=True");
-            optionsBuilder.UseSqlServer(args[0]);  //Cuando llamemos a add-migration, tenemos que pasar por paramentro la connectionString.
+            optionsBuilder.UseSqlServer(conectionString);  //Cuando llamemos a add-migration, tenemos que pasar por paramentro la connectionString.
+           
 
 
             return new MDBContext(optionsBuilder.Options);

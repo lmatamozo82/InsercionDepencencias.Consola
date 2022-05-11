@@ -11,7 +11,7 @@ namespace InsercionDepencencias.Consola
     public class App
     {
         private readonly IConfiguration _config;
-        private readonly MDBContext _dBContext;
+        private readonly MDBContext? _dBContext;
 
         public App(IConfiguration config, MDBContext db)
         {
@@ -24,11 +24,6 @@ namespace InsercionDepencencias.Consola
         public void Run()
         {
             Console.WriteLine("[APP.CS]: Inicio de Run.");
-            //var logDirectory = _config.GetValue<string>("Runtime:LogOutputDirectory");
-            //var logger = new LoggerConfiguration()
-            //    .WriteTo.Console()
-            //    .WriteTo.File(logDirectory)
-            //    .CreateLogger();
 
             ListarRercursos();
 
@@ -38,8 +33,26 @@ namespace InsercionDepencencias.Consola
         private void ListarRercursos()
         {
             Console.WriteLine("[APP.CS]: Inicio de ListarRecursos.");
+            Console.WriteLine("");
+            Console.WriteLine("[APP.CS]: Todos los recursos");
+            foreach (var r in _dBContext.Recursos)
+            {
+                Console.WriteLine("[APP.CS]: Recurso.Id=" + r.Id + ", Deno=" + r.Denominacion);
+            }
+            Console.WriteLine("");
+            Console.WriteLine("[APP.CS]: Todos los recursos. Orden inverso por Id");
+            foreach (var r in _dBContext.Recursos.OrderBy(x=>x.Id).Reverse())
+            {
+                Console.WriteLine("[APP.CS]: Recurso.Id=" + r.Id + ", Deno=" + r.Denominacion);
+            }
 
-
+            Console.WriteLine("");
+            Console.WriteLine("[APP.CS]: Solo los de Id par.");
+            foreach (var r in _dBContext.Recursos.Where(x => x.Id % 2==0))
+            {
+                Console.WriteLine("[APP.CS]: Recurso.Id=" + r.Id + ", Deno=" + r.Denominacion);
+            }
+            Console.WriteLine("");
             Console.WriteLine("[APP.CS]: Fin de ListarRecursos.");
         }
 

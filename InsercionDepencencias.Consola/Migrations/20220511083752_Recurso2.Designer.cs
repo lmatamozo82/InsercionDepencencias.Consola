@@ -3,6 +3,7 @@ using InsercionDepencencias.Consola;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InsercionDepencencias.Consola.Migrations
 {
     [DbContext(typeof(MDBContext))]
-    partial class MDBContextModelSnapshot : ModelSnapshot
+    [Migration("20220511083752_Recurso2")]
+    partial class Recurso2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

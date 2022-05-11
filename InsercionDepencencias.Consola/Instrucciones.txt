@@ -1,3 +1,7 @@
 ﻿#Ejemplo de llamada a Add-migration con parametros (para las opcines de DBContext en tiempo de Diseño):
 
-add-migration Recurso -Args "(localdb)\\mssqllocaldb;Initial Catalog=TestInsercion;Integrated Security=True"
+add-migration Recurso -Args "(localdb)\mssqllocaldb;Initial Catalog=TestInsercion;Integrated Security=True"
+update-database -Args "Data Source=(localdb)\mssqllocaldb;Initial Catalog=TestInsercion;Integrated Security=True"
+
+
+OJO. La conection string va con una contrabarra '\' no con 2. Aqui no tenemos que escaparla.
