@@ -2,6 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using InsercionDepencencias.Consola;
+using Serilog;
+using System.Reflection;
 
 Console.WriteLine("[PROGRAM.CS]: Inicio");
 
@@ -19,14 +21,18 @@ tmpApp.Run();
 Console.ReadKey();
 
 
-static IServiceCollection ConfigureServices()
+ IServiceCollection ConfigureServices()
 {
     IServiceCollection services = new ServiceCollection();
 
     //Creamos un gestor de configuraciones y lo añadimos al inyector de Dependencias.
     var config = LoadConfiguration();
     services.AddSingleton(config);
-    
+
+    //Creamos la instancia del loger de Serilog y lo añadimos al inyector de Dependencias.
+    string fileLog = System.IO.Path.Combine(config.GetSection("LogPath").Value, Assembly.GetExecutingAssembly().GetName().Name + ".log");
+    CreateLogger(fileLog);
+    services.AddLogging(configure => configure.AddSerilog()).AddTransient<App>();
 
     //Configuracion de DBContext
     var connectionstring = config.GetConnectionString("connetionTest");
@@ -38,11 +44,19 @@ static IServiceCollection ConfigureServices()
     return services;
 }
 
-static IConfiguration LoadConfiguration() //Metodo donde cargamos nuestro fichero appsettings.json 
+ IConfiguration LoadConfiguration() //Metodo donde cargamos nuestro fichero appsettings.json 
 {
     var builder = new ConfigurationBuilder()
         .SetBasePath(Directory.GetCurrentDirectory())
         .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
     return builder.Build();
+}
+
+void CreateLogger(string logFile)
+{
+    Log.Logger = new LoggerConfiguration()
+               .WriteTo.Console()
+               .WriteTo.File(logFile, rollingInterval: RollingInterval.Day)
+               .CreateLogger();
 }

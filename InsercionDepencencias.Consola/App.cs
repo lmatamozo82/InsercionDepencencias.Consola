@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,22 +13,26 @@ namespace InsercionDepencencias.Consola
     {
         private readonly IConfiguration _config;
         private readonly MDBContext? _dBContext;
+        private readonly ILogger _logger;
 
-        public App(IConfiguration config, MDBContext db)
+        public App(IConfiguration config, MDBContext db,ILogger<App> lg)
         {
             Console.WriteLine("[APP.CS]: Inicio de constructor.");
             _config = config;
             _dBContext = db;
+            _logger= lg;    
             Console.WriteLine("[APP.CS]: Fin de constructor.");
         }
 
         public void Run()
         {
-            Console.WriteLine("[APP.CS]: Inicio de Run.");
-
+            //Console.WriteLine("[APP.CS]: Inicio de Run.");
+            _logger.LogInformation("[APP.CS]: Inicio de Run.");
+            
             ListarRercursos();
 
-            Console.WriteLine("[APP.CS]: Fin de Run.");
+            //Console.WriteLine("[APP.CS]: Fin de Run.");
+            _logger.LogInformation("[APP.CS]: Fin de Run.");
         }
 
         private void ListarRercursos()
