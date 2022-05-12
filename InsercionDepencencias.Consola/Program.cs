@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+﻿using InsercionDepencencias.Consola;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using InsercionDepencencias.Consola;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using Serilog.Sinks.SystemConsole.Themes;
 using System.Reflection;
 
 Console.WriteLine("[PROGRAM.CS]: Inicio");
@@ -21,7 +22,7 @@ tmpApp.Run();
 Console.ReadKey();
 
 
- IServiceCollection ConfigureServices()
+IServiceCollection ConfigureServices()
 {
     IServiceCollection services = new ServiceCollection();
 
@@ -44,7 +45,7 @@ Console.ReadKey();
     return services;
 }
 
- IConfiguration LoadConfiguration() //Metodo donde cargamos nuestro fichero appsettings.json 
+IConfiguration LoadConfiguration() //Metodo donde cargamos nuestro fichero appsettings.json 
 {
     var builder = new ConfigurationBuilder()
         .SetBasePath(Directory.GetCurrentDirectory())
@@ -56,7 +57,8 @@ Console.ReadKey();
 void CreateLogger(string logFile)
 {
     Log.Logger = new LoggerConfiguration()
-               .WriteTo.Console()
-               .WriteTo.File(logFile, rollingInterval: RollingInterval.Day)
+               .MinimumLevel.Override("Microsoft.EntityFrameworkCore", Serilog.Events.LogEventLevel.Warning) //Sobreescribo el nivel de log para este espacio de nombres. No quiereo las SQL en el log.
+               .WriteTo.Console(theme: AnsiConsoleTheme.Literate, outputTemplate: "[{Timestamp:HH:mm:ss}][{Level:u3}][{Message:lj}]{NewLine}")
+               .WriteTo.File(logFile, rollingInterval: RollingInterval.Day, outputTemplate: "[{Timestamp:HH:mm:ss.fff}][{Level:u3}][{Message:lj}]{NewLine}")
                .CreateLogger();
 }
