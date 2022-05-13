@@ -17,7 +17,12 @@ var serviceProvider = services.BuildServiceProvider();
 Console.WriteLine("[PROGRAM.CS]: Llamada a metodo ConfigureServices.");
 var tmpApp = serviceProvider.GetService<App>(); //Obtenemos el objeto de tipo App de nuestro service provider y lo ejecutamos.
 
-tmpApp.Run();
+//tmpApp.Run();
+App? mApp = null;
+
+mApp = serviceProvider.GetService<App>(); //Obtenemos el objeto de tipo App de nuestro service provider y lo ejecutamos.
+
+if (mApp is not null) { mApp.Run(); }
 
 Console.ReadKey();
 
